@@ -32,6 +32,7 @@ export default function ManageContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchStudent = async () => {
+    setIsLoading(true)
     try {
       const requestBody = {
         branch: "all", // or a specific branch like "CSE"
