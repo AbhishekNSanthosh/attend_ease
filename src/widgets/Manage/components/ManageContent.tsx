@@ -29,9 +29,10 @@ export default function ManageContent() {
   const [deleteStudentId, setDeleteStudentId] = useState<string | null>(null);
   const [deleteStudentIndex, setDeleteStudentIndex] = useState(0);
   const [studentsCount, setStudentsCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStudent = async () => {
+  const fetchStudent = async () => {
+    try {
       const requestBody = {
         branch: "all", // or a specific branch like "CSE"
         sortOrder, // or "desc" depending on how you want to sort
@@ -52,8 +53,13 @@ export default function ManageContent() {
       } else {
         setStatus("No data found");
       }
-    };
-
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchStudent();
   }, [sortOrder]);
 
@@ -144,8 +150,8 @@ export default function ManageContent() {
         <div className="flex flex-row items-center justify-between">
           <TitleBar title="All batches" />
           <div className="">
-            <button className="p-3 text-white bg-azure-600 outline-none border-none rounded-[8px] flex items-center justify-center gap-2">
-              <FaCirclePlus className="text-2xl text-white" />
+            <button className="p-2 text-white text-sm bg-azure-600 outline-none border-none rounded-[8px] flex items-center justify-center gap-2">
+              <FaCirclePlus className="text-sm text-white" />
               Add New Batch
             </button>
           </div>
@@ -164,8 +170,13 @@ export default function ManageContent() {
           </div>
           <div className="flex-[2] flex items-center justify-end gap-5">
             <div className="bg-azure-50 rounded-[10px] p-2">
-              <span className="text-azure-600">
-                Items count: {filteredStudentData?.length}
+              <span className="text-azure-600 flex items-center justify-center gap-2">
+                Items count:{" "}
+                {isLoading ? (
+                  <div className="animate-pulse w-4 h-4 bg-gray-200 rounded-md"></div>
+                ) : (
+                  <>{filteredStudentData?.length}</>
+                )}
               </span>
             </div>
             <div className="relative">
@@ -204,69 +215,84 @@ export default function ManageContent() {
               Actions
             </div>
           </div>
-          {filteredStudentData.length !== 0 ? (
-            <div className="overflow-y-auto" style={{ maxHeight: "42vh" }}>
-              {filteredStudentData.map((student, index) => (
+          <div className="overflow-y-auto" style={{ maxHeight: "42vh" }}>
+            {isLoading ? (
+              Array.from({ length: 12 }).map((_, idx) => (
                 <div
-                  key={index}
-                  id={student._id}
+                  key={idx}
                   className="flex items-center border-b border-gray-200 p-2"
                 >
-                  <div className="flex-1 px-4 py-2 text-base text-gray-700">
-                    {index + 1}
-                  </div>
-                  <div className="flex-1 px-4 py-2 text-base text-gray-700">
-                    {student.rollNo}
-                  </div>
-                  <div className="flex-1 px-4 py-2 text-base text-gray-700">
-                    {student.name}
-                  </div>
-                  <div className="flex-1 px-4 py-2 text-base text-gray-700">
-                    {student.admnNo}
-                  </div>
-                  <div className="flex-1 px-4 py-2 text-base text-gray-700">
-                    {student.branch}
-                  </div>
-                  <div className="flex-1 px-4 py-2 text-center text-base text-gray-700">
-                    <div className="flex gap-2 items-center justify-center">
-                    <button
-                        className="text-azure-600 flex flex-row items-center justify-center bg-azure-100 p-2 rounded-[8px] text-xs"
-                        onClick={() =>
-                          router.push(`/dashboard/manage/view-stats/${student?._id}`)
-                        }
-                      >
-                        View stats
-                      </button>
-                      <button
-                        className="text-azure-600"
-                        onClick={() =>
-                          router.push(`/dashboard/manage/edit/${student?._id}`)
-                        }
-                      >
-                        <FiEdit className="text-2xl" />
-                      </button>
-                      <button
-                        className="text-red-600"
-                        onClick={() => {
-                          setDeleteStudentId(student._id);
-                          setShowDeleteConfirmModal(true);
-                          setDeleteStudentIndex(index);
-                        }}
-                      >
-                        <MdOutlineDelete className="text-2xl" />
-                      </button>
+                  <div className="animate-pulse w-full h-12 bg-gray-200 rounded-md"></div>
+                </div>
+              ))
+            ) : filteredStudentData.length !== 0 ? (
+              <>
+                {filteredStudentData.map((student, index) => (
+                  <div
+                    key={index}
+                    id={student._id}
+                    className="flex items-center border-b border-gray-200 p-2"
+                  >
+                    <div className="flex-1 px-4 py-2 text-base text-gray-700">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 px-4 py-2 text-base text-gray-700">
+                      {student.rollNo}
+                    </div>
+                    <div className="flex-1 px-4 py-2 text-base text-gray-700">
+                      {student.name}
+                    </div>
+                    <div className="flex-1 px-4 py-2 text-base text-gray-700">
+                      {student.admnNo}
+                    </div>
+                    <div className="flex-1 px-4 py-2 text-base text-gray-700">
+                      {student.branch}
+                    </div>
+                    <div className="flex-1 px-4 py-2 text-center text-base text-gray-700">
+                      <div className="flex gap-2 items-center justify-center">
+                        <button
+                          className="text-azure-600 flex flex-row items-center justify-center bg-azure-100 p-2 rounded-[8px] text-xs"
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/manage/view-stats/${student?._id}`
+                            )
+                          }
+                        >
+                          View stats
+                        </button>
+                        <button
+                          className="text-azure-600"
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/manage/edit/${student?._id}`
+                            )
+                          }
+                        >
+                          <FiEdit className="text-2xl" />
+                        </button>
+                        <button
+                          className="text-red-600"
+                          onClick={() => {
+                            setDeleteStudentId(student._id);
+                            setShowDeleteConfirmModal(true);
+                            setDeleteStudentIndex(index);
+                          }}
+                        >
+                          <MdOutlineDelete className="text-2xl" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="p-6 h-[42vh] flex items-center justify-center">
-              <p className="text-center text-xl font-medium text-azure-500">
-                No students found
-              </p>
-            </div>
-          )}
+                ))}
+              </>
+            ) : (
+              <div className="p-6 h-[42vh] flex items-center justify-center">
+                <p className="text-center text-xl font-medium text-azure-500">
+                  No students found
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
