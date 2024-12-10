@@ -16,7 +16,7 @@
     "fs": "^0.0.1-security",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
-    "next": "^15.0.3",
+    "next": "^15.0.4",
     "next-auth": "^4.24.10",
     "papaparse": "^5.4.1",
     "react": "^18",

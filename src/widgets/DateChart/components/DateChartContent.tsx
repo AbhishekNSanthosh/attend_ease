@@ -1,9 +1,11 @@
 "use client";
 
 import TitleBar from "@components/TitleBar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { RxCrossCircled } from "react-icons/rx";
 
 export default function DateChartContent() {
   const currentDate = new Date(); // Get the current date
@@ -26,6 +28,7 @@ export default function DateChartContent() {
 
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
+  const [markedDates, setMarkedDates] = useState<Date[]>([]); // Store marked dates
 
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate(); // Last day of the month
@@ -81,9 +84,38 @@ export default function DateChartContent() {
     );
   };
 
-//   const isWeekend = index % 7 === 0 || index % 7 === 6; // 0 for Sunday, 6 for Saturday
+  // Check if a day is marked
+  const isMarked = (day: number | null) => {
+    if (!day) return false;
+    return markedDates.some(
+      (date) =>
+        date.getDate() === day &&
+        date.getMonth() === currentMonth &&
+        date.getFullYear() === currentYear
+    );
+  };
 
+  // Fetch marked dates
+  useEffect(() => {
+    const fetchMarkedDates = async () => {
+      try {
+        const response = await fetch("/api/batch/date-chart", {
+          method: "POST",
+        });
+        const data = await response.json();
+        const fetchedDates = data.dates.map(
+          (dateString: string) => new Date(dateString)
+        );
+        setMarkedDates(fetchedDates);
+      } catch (error: any) {
+        console.log("Error fetching marked dates:", error);
+      }
+    };
 
+    fetchMarkedDates();
+  }, [currentMonth, currentYear]);
+
+  console.log(markedDates)
   return (
     <div className="p-6 bg-white rounded-[8px] flex flex-col space-y-10">
       <TitleBar
@@ -127,6 +159,8 @@ export default function DateChartContent() {
                 day
                   ? isToday(day)
                     ? "border-azure-200 bg-azure-200"
+                    : isMarked(day)
+                    ? "border-azure-300" // Highlight marked dates
                     : "border-azure-200 bg-azure-50 bg-opacity-15"
                   : "bg-transparent"
               }`}
@@ -144,12 +178,20 @@ export default function DateChartContent() {
 
                   {/* Attendance Info */}
                   <div className="w-full text-xs absolute bottom-1 left-2">
-                    {/* Not Marked */}
-                    <div className="flex justify-start items-center">
-                      <span className="text-red-600 text-opacity-45 text-[10px]">
-                        Not Marked
-                      </span>
-                    </div>
+                    {isMarked(day) ? (
+                      <div className="flex justify-start items-center">
+                        <span className="text-azure-700 text-opacity-70 text-[10px] flex items-center gap-1 justify-center">
+                         <IoIosCheckmarkCircleOutline/> Marked
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex justify-start items-center">
+                        <span className="text-red-600 text-opacity-45 text-[10px] flex items-center justify-center gap-1">
+                          <RxCrossCircled/>
+                          Not Marked
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </>
               ) : (
