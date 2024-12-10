@@ -29,6 +29,7 @@ export default function DateChartContent() {
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [markedDates, setMarkedDates] = useState<Date[]>([]); // Store marked dates
+  const [isLoading, setIsLoading] = useState(true);
 
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate(); // Last day of the month
@@ -109,13 +110,15 @@ export default function DateChartContent() {
         setMarkedDates(fetchedDates);
       } catch (error: any) {
         console.log("Error fetching marked dates:", error);
+      }finally{
+        setIsLoading(false)
       }
     };
 
     fetchMarkedDates();
   }, [currentMonth, currentYear]);
 
-  console.log(markedDates)
+  console.log(markedDates);
   return (
     <div className="p-6 bg-white rounded-[8px] flex flex-col space-y-10">
       <TitleBar
@@ -178,19 +181,25 @@ export default function DateChartContent() {
 
                   {/* Attendance Info */}
                   <div className="w-full text-xs absolute bottom-1 left-2">
-                    {isMarked(day) ? (
-                      <div className="flex justify-start items-center">
-                        <span className="text-azure-700 text-opacity-70 text-[10px] flex items-center gap-1 justify-center">
-                         <IoIosCheckmarkCircleOutline/> Marked
-                        </span>
-                      </div>
+                    {isLoading ? (
+                      <div className=" animate-pulse w-3/6 h-4 bg-gray-200 rounded-md"></div>
                     ) : (
-                      <div className="flex justify-start items-center">
-                        <span className="text-red-600 text-opacity-45 text-[10px] flex items-center justify-center gap-1">
-                          <RxCrossCircled/>
-                          Not Marked
-                        </span>
-                      </div>
+                      <>
+                        {isMarked(day) ? (
+                          <div className="flex justify-start items-center">
+                            <span className="text-azure-700 text-opacity-70 text-[10px] flex items-center gap-1 justify-center">
+                              <IoIosCheckmarkCircleOutline /> Marked
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex justify-start items-center">
+                            <span className="text-red-600 text-opacity-45 text-[10px] flex items-center justify-center gap-1">
+                              <RxCrossCircled />
+                              Not Marked
+                            </span>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 </>
