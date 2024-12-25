@@ -117,7 +117,7 @@ export default function AttendanceContent() {
             ? Array.from({ length: 8 }).map((_, idx) => (
                 <div
                   key={idx}
-                  className="relative w-[285px] h-[245px] p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 flex flex-col justify-between"
+                  className="relative w-[10rem] h-[245px] p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 flex flex-col justify-between"
                 >
                   <div className="animate-pulse w-3/4 h-9 bg-gray-200 rounded-md"></div>
                   <div className="animate-pulse w-3/5 h-9 bg-gray-200 rounded-md"></div>

@@ -29,7 +29,7 @@ const AttendanceItem: React.FC<AttendanceProps> = ({
   console.log(isPresentFull)
 
   return (
-    <div className="attendance-item p-4 rounded-md shadow-sm w-[280px] bg-white bg-opacity-20 border-[1px] border-azure-100 h-[160px] flex flex-col justify-between">
+    <div className="attendance-item p-4 rounded-md shadow-sm min-w-[17rem] bg-white bg-opacity-20 border-[1px] border-azure-100 h-[160px] flex flex-col justify-between">
       <div className="flex flex-row items-center space-x-2">
         <FiClock className="text-gray-600" />
         <span className="text-gray-600">{formatDate(date)}</span>
