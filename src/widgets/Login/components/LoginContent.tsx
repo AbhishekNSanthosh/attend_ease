@@ -25,6 +25,7 @@ export default function LoginContent() {
     message: "",
     desc: "",
   });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
     console.log(status);
@@ -34,6 +35,7 @@ export default function LoginContent() {
   }, [status]);
 
   const handleLogin = async (e: any) => {
+    setLoading(true);
     e.preventDefault();
     try {
       console.log("called");
@@ -68,6 +70,8 @@ export default function LoginContent() {
         message: newError.message || "An error occurred. Please try again.",
         desc: newError.desc || "An error occurred. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -118,9 +122,10 @@ export default function LoginContent() {
           <div className="flex flex-col gap-5 justify-between items-center mb-6">
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-azure-600 text-white py-3 rounded-md hover:bg-azure-700 transition duration-200"
             >
-              Login
+              {loading ? "Please wait" : "Login"}
             </button>
             <a
               href="#"
