@@ -37,7 +37,7 @@ export default function SideBar() {
                 key={menu.link}
                 href={`/dashboard${menu.link}`}
                 className={`sidebar-item flex items-center gap-2 hover:bg-azure-50 h-[3.4rem] relative px-[2vw] transition-all duration-300 ease-in-out ${
-                  isActive ? "bg-azure-50" : ""
+                  isActive ? "bg-azure-50 bg-opacity-45" : ""
                 }`}
               >
                 {/* Left indicator for active state */}

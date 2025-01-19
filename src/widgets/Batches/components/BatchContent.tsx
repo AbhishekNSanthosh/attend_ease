@@ -6,6 +6,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { LuRefreshCcw } from "react-icons/lu";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Batch = {
   division: string;
@@ -70,15 +71,12 @@ export default function BatchContent() {
         <div className="flex flex-row items-center justify-between">
           <TitleBar title="All batches" />
           <div className="">
-            <button
-              onClick={() => {
-                router.push("/dashboard/batches/new-batch");
-              }}
-              className="p-2 text-white text-sm bg-azure-600 outline-none border-none rounded-[8px] flex items-center justify-center gap-2"
-            >
-              <FaCirclePlus className="text-sm text-white" />
-              Add New Batch
-            </button>
+            <Link href={"/dashboard/batches/new-batch"}>
+              <button className="p-2 text-white text-sm bg-azure-600 outline-none border-none rounded-[8px] flex items-center justify-center gap-2">
+                <FaCirclePlus className="text-sm text-white" />
+                Add New Batch
+              </button>
+            </Link>
           </div>
         </div>
         <div className="flex flex-row">
@@ -130,7 +128,6 @@ export default function BatchContent() {
                 <div
                   key={idx}
                   className="relative h-auto p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 flex flex-col justify-between gap-4"
-
                 >
                   <div className="animate-pulse w-3/4 h-9 bg-gray-200 rounded-md"></div>
                   <div className="animate-pulse w-3/5 h-9 bg-gray-200 rounded-md"></div>
