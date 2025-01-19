@@ -110,11 +110,11 @@ console.log(attendanceData)
         <div className="flex flex-col w-full space-y-6">
           <div className="flex flex-row items-center justify-between">
             <TitleBar title="Attendance history" />
-            <div className="">
+            {/* <div className="">
               <button className="">
                 <span className="font-semibold text-azure-600">View all</span>
               </button>
-            </div>
+            </div> */}
           </div>
           {attendanceData === null || attendanceData?.attendanceCounts.length === 0 ? (
             <div className="w-full flex items-center justify-center h-[40vh]">

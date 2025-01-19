@@ -76,6 +76,9 @@ export default function MarkAttendanceContent() {
         message: "Attendance marked successfully!",
         type: "success",
       });
+      setTimeout(() => {
+        router.push("/dashboard/attendance");
+      }, 300);
     } catch (error: any) {
       console.log("Error:", error);
 
@@ -390,7 +393,7 @@ export default function MarkAttendanceContent() {
           className="absolute w-full h-full inset-0 bg-azure-100 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50"
         >
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-lg font-semibold mb-4">Select a Date</h2>
+            <h2 className="text-lg font-semibold mb-4">Confirm</h2>
             <div className="">
               <span className="">Are you sure you want to continue ?</span>
             </div>

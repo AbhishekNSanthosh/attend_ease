@@ -40,9 +40,9 @@ const AttendanceItem: React.FC<AttendanceProps> = ({
       </div>
       <div className="w-full flex flex-row items-center justify-between">
         {!isPresentFull && (
-          <div className="flex flex-row items-center space-x-2">
-            <span className="text-red-600 font-bold text-base">{absent}</span>
-            <span className="capitalize text-red-600">absent</span>
+          <div className="flex flex-row items-center space-x-2 bg-red-100 p-2 rounded-[5px] py-1">
+            <span className="text-red-600 font-bold text-xs">{absent}</span>
+            <span className="capitalize text-red-600 text-xs">absent</span>
           </div>
         )}
         {isPresentFull && (
