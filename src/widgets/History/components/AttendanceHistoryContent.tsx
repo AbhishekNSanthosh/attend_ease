@@ -95,7 +95,7 @@ export default function AttendanceHistoryContent() {
              Array.from({ length: 12 }).map((_, idx) => (
               <div
                 key={idx}
-                className="attendance-item p-4 rounded-md shadow-sm w-[280px] bg-white bg-opacity-20 border-[1px] border-azure-100 h-[160px] flex flex-col justify-between"
+                className="attendance-item p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 h-[160px] flex flex-col justify-between"
               >
                  <div className=" animate-pulse w-3/4 h-6 bg-gray-200 rounded-md"></div>
                  <div className=" animate-pulse w-3/5 h-7 bg-gray-200 rounded-md"></div>

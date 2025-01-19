@@ -129,13 +129,13 @@ export default function BatchContent() {
             ? Array.from({ length: 8 }).map((_, idx) => (
                 <div
                   key={idx}
-                  className="relative h-[245px] p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 flex flex-col justify-between"
+                  className="relative h-auto p-4 rounded-md shadow-sm bg-white bg-opacity-20 border-[1px] border-azure-100 flex flex-col justify-between gap-4"
+
                 >
                   <div className="animate-pulse w-3/4 h-9 bg-gray-200 rounded-md"></div>
                   <div className="animate-pulse w-3/5 h-9 bg-gray-200 rounded-md"></div>
                   <div className="w-full h-[1px] bg-gray-200"></div>
                   <div className="flex flex-col space-y-3">
-                    <div className="animate-pulse w-full h-9 bg-gray-200 rounded-md"></div>
                     <div className="animate-pulse w-full h-9 bg-gray-200 rounded-md"></div>
                   </div>
                 </div>
