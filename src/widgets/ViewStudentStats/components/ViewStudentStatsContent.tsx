@@ -44,10 +44,6 @@ export default function ViewStudentStatsContent() {
     }
   }, [studentId]); // Re-run the effect when studentId changes
 
-  if (loading) {
-    return <div className="text-center text-xl font-semibold">Loading...</div>;
-  }
-
   if (error) {
     return <div className="text-center text-red-500">{error}</div>;
   }
@@ -70,7 +66,7 @@ export default function ViewStudentStatsContent() {
 
   // Calculate absentee percentage
   const absenteePercentage =
-    studentInfo.totalAttendance > 0
+    studentInfo?.totalAttendance > 0
       ? absencesCount === 0
         ? "100.00" // If no absences, attendance is 100%
         : (
@@ -86,53 +82,77 @@ export default function ViewStudentStatsContent() {
       <div className="flex w-full h-full space-x-10">
         <div className="flex-1 relative">
           {/* Student Details */}
-          <div className="bg-white rounded-lg space-y-4">
-            <h3 className="text-xl text-azure-600 font-semibold mb-4">
-              Student Details
-            </h3>
+          {loading ? (
+            <div className="bg-white rounded-lg space-y-4">
+              <h3 className="text-xl text-azure-600 font-semibold mb-4">
+                Student Details
+              </h3>
 
-            <p className="text-gray-800 text-base capitalize">
-              <span className="font-normal text-gray-600">Name:</span>{" "}
-              {studentInfo?.name}
-            </p>
-            <p className="text-gray-800 text-base">
-              <span className="font-normal text-gray-600">
-                Admission Number:
-              </span>{" "}
-              {studentInfo?.admnNo}
-            </p>
-            <p className="text-gray-800 text-base">
-              <span className="font-normal text-gray-600">Branch:</span>{" "}
-              {studentInfo?.branch}
-            </p>
-            <p className="text-gray-800 text-base">
-              <span className="font-normal text-gray-600">Division:</span>{" "}
-              {studentInfo?.division}
-            </p>
-            <p className="text-gray-800 text-base">
-              <span className="font-normal text-gray-600">Contact info: </span>{" "}
-              {studentInfo?.phoneNo}
-            </p>
-          </div>
+              <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+              <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+              <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+              <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+              <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg space-y-4">
+              <h3 className="text-xl text-azure-600 font-semibold mb-4">
+                Student Details
+              </h3>
+
+              <p className="text-gray-800 text-base capitalize">
+                <span className="font-normal text-gray-600">Name:</span>{" "}
+                {studentInfo?.name}
+              </p>
+              <p className="text-gray-800 text-base">
+                <span className="font-normal text-gray-600">
+                  Admission Number:
+                </span>{" "}
+                {studentInfo?.admnNo}
+              </p>
+              <p className="text-gray-800 text-base">
+                <span className="font-normal text-gray-600">Branch:</span>{" "}
+                {studentInfo?.branch}
+              </p>
+              <p className="text-gray-800 text-base">
+                <span className="font-normal text-gray-600">Division:</span>{" "}
+                {studentInfo?.division}
+              </p>
+              <p className="text-gray-800 text-base">
+                <span className="font-normal text-gray-600">
+                  Contact info:{" "}
+                </span>{" "}
+                {studentInfo?.phoneNo}
+              </p>
+            </div>
+          )}
           <div className="absolute bottom-0 w-full text-gray-700 space-y-6">
             <div className="w-full h-[1px] bg-azure-200"></div>
-            <div className="w-full flex flex-col space-y-2">
-              <div className="flex items-center space-x-3">
-                <span className="">Total absent days</span>
-                <span className="">:</span>
-                <span className="">{absencesCount}</span>
+            {loading ? (
+              <div className="w-full flex flex-col space-y-2">
+                <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+                <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
+                <div className="animate-pulse w-full h-6 bg-gray-200 rounded-md"></div>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="">Total attended days</span>
-                <span className="">:</span>
-                <span className="">{studentInfo.totalAttendance}</span>
+            ) : (
+              <div className="w-full flex flex-col space-y-2">
+                <div className="flex items-center space-x-3">
+                  <span className="">Total absent days</span>
+                  <span className="">:</span>
+                  <span className="">{absencesCount}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="">Total attended days</span>
+                  <span className="">:</span>
+                  <span className="">{studentInfo?.totalAttendance}</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="">Attendance percentage</span>
+                  <span className="">:</span>
+                  <span className="">{absenteePercentage}%</span>
+                </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="">Attendance percentage</span>
-                <span className="">:</span>
-                <span className="">{absenteePercentage}%</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="h-full w-[1px] bg-gray-400"></div>
@@ -140,36 +160,51 @@ export default function ViewStudentStatsContent() {
           <h3 className="text-xl text-azure-600 font-semibold mb-4">
             Attendance Records
           </h3>
-          <div className="max-h-[60vh] overflow-auto py-1 pr-3">
-            {studentInfo?.studentAttendance?.length > 0 ? (
-              <ul className="space-y-4">
-                {studentInfo.studentAttendance.map(
-                  (
-                    entry: { date: string; isPresent: boolean },
-                    index: number
-                  ) => (
-                    <li
-                      key={index}
-                      className="flex justify-between text-gray-700 items-center text-sm bg-azure-50 p-2 rounded-lg"
-                    >
-                      <span className="font-medium">
-                        {formatDate(entry.date)}
-                      </span>
-                      <span
-                        className={
-                          entry.isPresent ? "text-azure-700" : "text-red-600"
-                        }
+          {loading ? (
+           <div className="max-h-[60vh] overflow-auto py-1 pr-3">
+              {Array.from({ length: 12 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center border-b border-gray-200 p-2"
+                >
+                  <div className="animate-pulse w-full h-12 bg-gray-200 rounded-md"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="max-h-[60vh] overflow-auto py-1 pr-3">
+              {studentInfo?.studentAttendance?.length > 0 ? (
+                <ul className="space-y-4">
+                  {studentInfo.studentAttendance.map(
+                    (
+                      entry: { date: string; isPresent: boolean },
+                      index: number
+                    ) => (
+                      <li
+                        key={index}
+                        className="flex justify-between text-gray-700 items-center text-sm bg-azure-50 p-2 rounded-lg"
                       >
-                        {entry.isPresent ? "Present" : "Absent"}
-                      </span>
-                    </li>
-                  )
-                )}
-              </ul>
-            ) : (
-              <div className="text-gray-500">No attendance data available.</div>
-            )}
-          </div>
+                        <span className="font-medium">
+                          {formatDate(entry.date)}
+                        </span>
+                        <span
+                          className={
+                            entry.isPresent ? "text-azure-700" : "text-red-600"
+                          }
+                        >
+                          {entry.isPresent ? "Present" : "Absent"}
+                        </span>
+                      </li>
+                    )
+                  )}
+                </ul>
+              ) : (
+                <div className="text-gray-500">
+                  No attendance data available.
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
