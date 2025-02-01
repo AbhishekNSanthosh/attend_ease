@@ -25,11 +25,11 @@ export default function SideBar() {
         >
           <Image src={"/logo/logo.svg"} alt="" width={130} height={150} />
         </Link>
-        <div className="sidebar mt-[60px] space-y-2">
+        <div className="sidebar mt-[80px] space-y-2">
           {filteredMenu.map((menu) => {
             // Determine if the current menu is active
             const isActive =
-              (location === "/dashboard" && menu.link === "/") || // Special case for root /dashboard
+              (location === "/dashboard" && menu.link === "/") || // Special case for root /dashboard 
               location.includes(`/dashboard${menu.link}`);
 
             return (
